@@ -45,7 +45,13 @@ namespace API.Controllers
                 return BadRequest("Wronge data");
             }
         }
+        [HttpGet("getspecificuser")]
+        public async Task<IActionResult> getspecificuser()
+        {
+            
+            return Ok();
 
+        }
 
         [HttpGet("getallusers")]
         public async Task<IActionResult> allusers()
