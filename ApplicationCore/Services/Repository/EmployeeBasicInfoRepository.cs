@@ -83,9 +83,21 @@ namespace ApplicationCore.Services.Repository
 
         public async Task<IEnumerable<EmployeeBasicInfoDto>> GetAllEmpBasicInfo()
         {
-            _mylogger.LogInformation("User Visited here");
-            var emp = await _context.EmployeeBasicInfos.Where(x=>x.IsDeleted==false).ToListAsync();
-            return _mapper.Map<IEnumerable<EmployeeBasicInfoDto>>(emp);
+            //var rtnemp = _mapper.Map< IEnumerable< EmployeeBasicInfoDto>>(null);
+
+            var rtnemp = await _context.EmployeeBasicInfos.Where(x => x.IsDeleted == false).ToListAsync();
+            try
+            {
+                _mylogger.LogInformation($"User Visited here {DateTime.UtcNow.ToString()} ");
+              
+               // return _mapper.Map<IEnumerable<EmployeeBasicInfoDto>>(rtnemp);
+            }
+            catch (Exception ex)
+            {
+
+                _mylogger.LogError("User Visited here with issues");
+            }
+            return _mapper.Map<IEnumerable<EmployeeBasicInfoDto>>(rtnemp);
         }
 
         public async Task<EmployeeBasicInfoDto> GetEmpBasicInfoById(int id)
