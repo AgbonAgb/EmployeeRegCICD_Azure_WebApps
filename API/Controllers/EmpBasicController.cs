@@ -9,7 +9,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class EmpBasicController : ControllerBase
     {
         private readonly IEmployeeBasicInfoRepository _employeeBasicInfoRepository;
