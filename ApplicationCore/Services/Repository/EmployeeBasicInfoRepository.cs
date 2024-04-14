@@ -4,6 +4,7 @@ using AutoMapper;
 using Infrastructure.Data;
 using Infrastructure.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,12 @@ namespace ApplicationCore.Services.Repository
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
-        public EmployeeBasicInfoRepository(AppDbContext context, IMapper mapper)
+        private readonly ILogger<EmployeeBasicInfoRepository> _mylogger;
+        public EmployeeBasicInfoRepository(AppDbContext context, IMapper mapper, ILogger<EmployeeBasicInfoRepository> mylogger)
         {
             _context = context;
             _mapper=mapper;
+            _mylogger=mylogger;
         }
 
         public async Task<(string message, bool isSuccessful)> CreateEmpBasicInfo(EmployeeBasicInfoDto empdto)
@@ -80,8 +83,21 @@ namespace ApplicationCore.Services.Repository
 
         public async Task<IEnumerable<EmployeeBasicInfoDto>> GetAllEmpBasicInfo()
         {
-            var emp = await _context.EmployeeBasicInfos.Where(x=>x.IsDeleted==false).ToListAsync();
-            return _mapper.Map<IEnumerable<EmployeeBasicInfoDto>>(emp);
+            //var rtnemp = _mapper.Map< IEnumerable< EmployeeBasicInfoDto>>(null);
+
+            var rtnemp = await _context.EmployeeBasicInfos.Where(x => x.IsDeleted == false).ToListAsync();
+            try
+            {
+                _mylogger.LogInformation($"User Visited here {DateTime.UtcNow.ToString()} ");
+              
+               // return _mapper.Map<IEnumerable<EmployeeBasicInfoDto>>(rtnemp);
+            }
+            catch (Exception ex)
+            {
+
+                _mylogger.LogError("User Visited here with issues");
+            }
+            return _mapper.Map<IEnumerable<EmployeeBasicInfoDto>>(rtnemp);
         }
 
         public async Task<EmployeeBasicInfoDto> GetEmpBasicInfoById(int id)
