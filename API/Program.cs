@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NLog.Web;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,14 +16,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-
-//Setup log
-var path = string.Concat(Directory.GetCurrentDirectory(), "\\nLog.config");
-var logger = NLogBuilder.ConfigureNLog(path).GetCurrentClassLogger();
-logger.Debug("init main1");
-builder.Logging.ClearProviders();
-builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-builder.Host.UseNLog();
 
 
 
