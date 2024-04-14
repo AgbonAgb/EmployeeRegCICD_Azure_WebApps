@@ -99,7 +99,7 @@ namespace API.Controllers
             }
             else
             {
-                return BadRequest("Wrong data");
+                return BadRequest("Wrong data was supplied");
             }
 
         }
