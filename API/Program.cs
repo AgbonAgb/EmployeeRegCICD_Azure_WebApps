@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NLog.Web;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+//Logs
+var path = string.Concat(Directory.GetCurrentDirectory(), "\\nLog.config");
+var logger = NLogBuilder.ConfigureNLog(path).GetCurrentClassLogger();
+logger.Debug("init main1");
+// To override the default set of logging providers added by Host.CreateDefaultBuilder, call ClearProviders
+builder.Logging.ClearProviders();
+//Trace = 0, Debug = 1, Information = 2, Warning = 3, Error = 4, Critical = 5, and None = 6.
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Host.UseNLog();
 
 
 

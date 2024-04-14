@@ -16,11 +16,13 @@ namespace ApplicationCore.Services.Repository
     public class EmployeeBasicInfoRepository: IEmployeeBasicInfoRepository
     {
         private readonly AppDbContext _context;
-        private readonly IMapper _mapper;      
-        public EmployeeBasicInfoRepository(AppDbContext context, IMapper mapper)
+        private readonly IMapper _mapper;  
+        private  readonly ILogger<EmployeeBasicInfoRepository> _logger;
+        public EmployeeBasicInfoRepository(AppDbContext context, IMapper mapper, ILogger<EmployeeBasicInfoRepository> logger)
         {
             _context = context;
             _mapper=mapper;
+            _logger=logger;
            
         }
 
@@ -82,8 +84,8 @@ namespace ApplicationCore.Services.Repository
 
         public async Task<IEnumerable<EmployeeBasicInfoDto>> GetAllEmpBasicInfo()
         {
-           
 
+            _logger.LogInformation($"User Visited here {DateTime.UtcNow.ToString()}");
             var rtnemp = await _context.EmployeeBasicInfos.Where(x => x.IsDeleted == false).ToListAsync();
             
             return _mapper.Map<IEnumerable<EmployeeBasicInfoDto>>(rtnemp);
